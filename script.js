@@ -52,15 +52,28 @@ async function getPokemonEvolutionData(id){
 }
 
 function displayPokemonData(pokemon){
-    const pokemon_name = document.getElementById("pokemon_name");
-    const pokemon_image = document.getElementById("pokemon_image");
+    const show_pokemon_name = document.getElementById("pokemon_name");
+    const show_pokemon_image = document.getElementById("pokemon_image");
     const pokemon_info = document.getElementById("pokemon_info");
 
     // pokemon name
+    show_pokemon_name.textContent = capitalise(pokemon.name);
+
+    const pokemon_name = document.createElement("div");
     pokemon_name.textContent = capitalise(pokemon.name);
+    pokemon_name.classList.add("pokemon-name");
+    pokemon_info.appendChild(pokemon_name);
 
     // pokemon image
+    show_pokemon_image.src = pokemon.image_url;
+
+    const pokemon_image_div = document.createElement("div");
+    const pokemon_image = document.createElement("img");
     pokemon_image.src = pokemon.image_url;
+    pokemon_image_div.appendChild(pokemon_image);
+    pokemon_image_div.classList.add("pokemon-image");
+    pokemon_info.appendChild(pokemon_image_div);
+
 
     // pokemon types
     const pokemon_type_1 = document.createElement("div");

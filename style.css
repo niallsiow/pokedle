@@ -3,15 +3,23 @@
 #pokemon_info{
     display: grid;
 
-    grid-template-columns: 100px 100px 100px 100px 100px;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
 }
 
-.type-1{
+.pokemon-name{
     grid-column: 1;
 }
 
-.type-2{
+.pokemon-image{
     grid-column: 2;
+}
+
+.type-1{
+    grid-column: 3;
+}
+
+.type-2{
+    grid-column: 4;
 }
 
 #search_results{
