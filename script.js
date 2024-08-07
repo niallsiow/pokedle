@@ -1,3 +1,19 @@
+// make a pokemon object?
+// can then populate it with get pokemon, and pass it to display pokemon
+// or populate with get pokemon, and make it the guess to match against
+
+function Pokemon(name, image_url, type1, type2){
+    this.name = name;
+    this.image_url = image_url;
+    this.type1 = type1;
+    this.type2 = type2;
+}
+
+function printPokemon(pokemon){
+    console.log(`name = ${pokemon.name}, type 1 = ${pokemon.type1}, type 2 = ${pokemon.type2}`);
+    console.log(`image url = ${pokemon.image_url}`);
+}
+
 function capitalise(s){
     return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -13,7 +29,7 @@ async function getAllPokemonNames(max){
     const pokemon_data = await response.json();
 
     for(let i = 0; i < pokemon_data.results.length; i++){
-        pokemon.push(pokemon_data.results[i].name);
+        pokemon_list.push(pokemon_data.results[i].name);
     }
 }
 
@@ -35,36 +51,37 @@ async function getPokemonEvolutionData(id){
 
 }
 
-function displayPokemonData(pokemon_data){
+function displayPokemonData(pokemon){
     const pokemon_name = document.getElementById("pokemon_name");
     const pokemon_image = document.getElementById("pokemon_image");
-    const pokemon_type_1 = document.getElementById("type-1");
-    const pokemon_type_2 = document.getElementById("type-2");
+    const pokemon_info = document.getElementById("pokemon_info");
 
     // pokemon name
-    pokemon_name.textContent = capitalise(pokemon_data.name);
+    pokemon_name.textContent = capitalise(pokemon.name);
 
     // pokemon image
-    pokemon_image.src = pokemon_data.sprites.front_default;
+    pokemon_image.src = pokemon.image_url;
 
     // pokemon types
-    pokemon_type_1.textContent = pokemon_data.types[0].type.name;
-    if(pokemon_data.types.length == 1){
-        pokemon_type_2.textContent = "N/A";
-    }
-    else{
-        pokemon_type_2.textContent += pokemon_data.types[1].type.name;
-    }
+    const pokemon_type_1 = document.createElement("div");
+    pokemon_type_1.textContent = pokemon.type1;
+    pokemon_type_1.classList.add("type-1");
+    pokemon_info.appendChild(pokemon_type_1);
+
+    const pokemon_type_2 = document.createElement("div");
+    pokemon_type_2.textContent = pokemon.type2;
+    pokemon_type_2.classList.add("type-2");
+    pokemon_info.appendChild(pokemon_type_2);
 }
 
 async function getPokemon(id){
+    // fetch data
     const pokemon_data = await getPokemonData(id);
 
     const pokemon_species_data = await getPokemonSpeciesData(id);
     
     console.log("pokemon species");
     console.log(pokemon_species_data);
-
     console.log(pokemon_species_data.evolution_chain.url);
 
     // // evolution info
@@ -78,7 +95,18 @@ async function getPokemon(id){
     // for evolution stage -> if len(evolvesfrom == 0, stage 1, if == 1, stage 2, if == 2, stage 3)
     // -> if len(evolvesto >= 1, not fully evolved, if == 0, fully evolved)
 
-    displayPokemonData(pokemon_data);
+
+    // create new pokemon
+    const pokemon = new Pokemon();
+    pokemon.name = pokemon_data.name;
+    pokemon.image_url = pokemon_data.sprites.front_default;
+    pokemon.type1 = pokemon_data.types[0].type.name;
+    pokemon.type2 = "None";
+    if(pokemon_data.types.length > 1){
+        pokemon.type2 = pokemon_data.types[1].type.name;
+    }
+
+    return pokemon;
 }
 
 
@@ -92,7 +120,7 @@ show_button.addEventListener("click", () => {
 });
 
 // populate pokemon array
-const pokemon = [];
+const pokemon_list = [];
 getAllPokemonNames(151);
 
 // pokemon search logic
@@ -102,7 +130,7 @@ const search_results = document.getElementById("search_results");
 search.addEventListener("input", () => {
     search_results.replaceChildren();
 
-    for(let i = 0; i < pokemon.length; i++){
+    for(let i = 0; i < pokemon_list.length; i++){
 
         if(search.value.length == 0){
             continue;
@@ -110,8 +138,8 @@ search.addEventListener("input", () => {
 
         let j = 0;
         let match = true;
-        while(j < search.value.length && j < pokemon[i].length){
-            if(search.value[j] != pokemon[i][j]){
+        while(j < search.value.length && j < pokemon_list[i].length){
+            if(search.value[j] != pokemon_list[i][j]){
                 match = false;
                 break;
             }
@@ -122,7 +150,17 @@ search.addEventListener("input", () => {
         if(match){
             // add pokemon to search results
             const matching_pokemon = document.createElement("div");
-            matching_pokemon.textContent += pokemon[i];
+            matching_pokemon.textContent += pokemon_list[i];
+
+            
+            // add event listener to allow selection from search results
+            matching_pokemon.addEventListener("click", async () =>{
+                let pokemon = await getPokemon(i + 1);
+                printPokemon(pokemon);
+                displayPokemonData(pokemon);
+            });
+
+
             search_results.appendChild(matching_pokemon);
         }
     }
@@ -131,4 +169,5 @@ search.addEventListener("input", () => {
 
 
 
-getPokemon(getRandomPokemonID());
+// getPokemon(getRandomPokemonID());
+
