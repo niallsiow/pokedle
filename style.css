@@ -1,0 +1,17 @@
+
+
+#pokemon_info{
+    display: grid;
+
+    grid-template-columns: 100px 100px 100px 100px 100px;
+}
+
+#search_results{
+    max-height: 100px;
+    width: 300px;
+    overflow: auto;
+}
+
+#search_results > * {
+    border: 1px solid black;
+}

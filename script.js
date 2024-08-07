@@ -6,6 +6,17 @@ function getRandomPokemonID(){
     return Math.floor(Math.random() * 151) + 1;
 }
 
+async function getAllPokemonNames(max){
+    // add a map of genname to max pokedex value here
+
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${max.toString()}/`);
+    const pokemon_data = await response.json();
+
+    for(let i = 0; i < pokemon_data.results.length; i++){
+        pokemon.push(pokemon_data.results[i].name);
+    }
+}
+
 async function getPokemonData(id){
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id.toString()}/`);
     const pokemon_data = await response.json();
@@ -14,7 +25,10 @@ async function getPokemonData(id){
 }
 
 async function getPokemonSpeciesData(id){
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id.toString()}/`);
+    const species_data = await response.json();
 
+    return species_data;
 }
 
 async function getPokemonEvolutionData(id){
@@ -22,10 +36,10 @@ async function getPokemonEvolutionData(id){
 }
 
 function displayPokemonData(pokemon_data){
-    let pokemon_name = document.getElementById("pokemon_name");
-    let pokemon_image = document.getElementById("pokemon_image");
-    let pokemon_type_1 = document.getElementById("type-1");
-    let pokemon_type_2 = document.getElementById("type-2");
+    const pokemon_name = document.getElementById("pokemon_name");
+    const pokemon_image = document.getElementById("pokemon_image");
+    const pokemon_type_1 = document.getElementById("type-1");
+    const pokemon_type_2 = document.getElementById("type-2");
 
     // pokemon name
     pokemon_name.textContent = capitalise(pokemon_data.name);
@@ -44,17 +58,14 @@ function displayPokemonData(pokemon_data){
 }
 
 async function getPokemon(id){
-    let pokemon_data = await getPokemonData(id);
+    const pokemon_data = await getPokemonData(id);
 
+    const pokemon_species_data = await getPokemonSpeciesData(id);
     
-    // // species info
-    // const species_response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id.toString()}/`);
-    // const pokemon_species_data = await species_response.json();
-    
-    // console.log("pokemon species");
-    // console.log(pokemon_species_data);
+    console.log("pokemon species");
+    console.log(pokemon_species_data);
 
-    // pokemon_species_data.evolution_chain.url
+    console.log(pokemon_species_data.evolution_chain.url);
 
     // // evolution info
     // const evolution_response = await fetch(pokemon_species_data.evolution_chain.url);
@@ -64,18 +75,60 @@ async function getPokemon(id){
     // console.log(evolution_chain_data);
     // console.log(evolution_chain_data.chain);
 
+    // for evolution stage -> if len(evolvesfrom == 0, stage 1, if == 1, stage 2, if == 2, stage 3)
+    // -> if len(evolvesto >= 1, not fully evolved, if == 0, fully evolved)
+
     displayPokemonData(pokemon_data);
 }
 
 
 
 // Main
-let image_div = document.getElementById("image_div");
-let show_button = document.getElementById("show_button");
+const image_div = document.getElementById("image_div");
+const show_button = document.getElementById("show_button");
 
 show_button.addEventListener("click", () => {
     image_div.style.display = "block";
 });
+
+// populate pokemon array
+const pokemon = [];
+getAllPokemonNames(151);
+
+// pokemon search logic
+const search = document.getElementById("search");
+const search_results = document.getElementById("search_results");
+
+search.addEventListener("input", () => {
+    search_results.replaceChildren();
+
+    for(let i = 0; i < pokemon.length; i++){
+
+        if(search.value.length == 0){
+            continue;
+        }
+
+        let j = 0;
+        let match = true;
+        while(j < search.value.length && j < pokemon[i].length){
+            if(search.value[j] != pokemon[i][j]){
+                match = false;
+                break;
+            }
+
+            j += 1;
+        }
+
+        if(match){
+            // add pokemon to search results
+            const matching_pokemon = document.createElement("div");
+            matching_pokemon.textContent += pokemon[i];
+            search_results.appendChild(matching_pokemon);
+        }
+    }
+});
+
+
 
 
 getPokemon(getRandomPokemonID());
