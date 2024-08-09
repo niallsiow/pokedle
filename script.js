@@ -119,10 +119,6 @@ async function getPokemon(id){
         }
     }
 
-    console.log(evolution_chain.stage1);
-    console.log(evolution_chain.stage2);
-    console.log(evolution_chain.stage3);
-
 
     // create new pokemon
     const pokemon = new Pokemon();
@@ -137,53 +133,56 @@ async function getPokemon(id){
     // find pokemon evolution stage
     for(let i = 0; i < evolution_chain.stage3.length; i++){
         if(pokemon.name == evolution_chain.stage3[i]){
-            pokemon.evolution_stage = 3;
+            pokemon.evolution_stage = "3";
             break;
         }
     }
     for(let i = 0; i < evolution_chain.stage2.length; i++){
         if(pokemon.name == evolution_chain.stage2[i]){
-            pokemon.evolution_stage = 2;
+            pokemon.evolution_stage = "2";
             break;
         }
     }
     for(let i = 0; i < evolution_chain.stage1.length; i++){
         if(pokemon.name == evolution_chain.stage1[i]){
-            pokemon.evolution_stage = 1;
+            pokemon.evolution_stage = "1";
             break;
         }
     }
 
-    pokemon.fully_evolved = true;
-    if(pokemon.evolution_stage == 2){
+    pokemon.fully_evolved = "Yes";
+    if(pokemon.evolution_stage == "2"){
         for(let i = 0; i < evolution_chain.stage3.length; i++){
             for(let j = 0; j < pokemon_list.length; j++){
                 if(evolution_chain.stage3[i] == pokemon_list[j]){
-                    pokemon.fully_evolved = false;
+                    pokemon.fully_evolved = "No";
+                    break;
                 }
             }
         }
     }
-    else if(pokemon.evolution_stage == 1){
+    else if(pokemon.evolution_stage == "1"){
         for(let i = 0; i < evolution_chain.stage2.length; i++){
             for(let j = 0; j < pokemon_list.length; j++){
                 if(evolution_chain.stage2[i] == pokemon_list[j]){
-                    pokemon.fully_evolved = false;
+                    pokemon.fully_evolved = "No";
+                    break;
                 }
             }
         }
     }
 
-    console.log(pokemon.evolution_stage);
-
-    if(pokemon.fully_evolved){
-        console.log(`${pokemon.name} is fully evolved.`);
-    }
-    else{
-        console.log(`${pokemon.name} is not fully evolved.`);
-    }
-
     return pokemon;
+}
+
+function addDataToDisplay(divname, content, target_content, display){
+    const div = document.createElement("div");
+    div.textContent = capitalise(content);
+    div.classList.add(divname);
+    if(content == target_content){
+        div.style.backgroundColor = match_color;
+    }
+    display.appendChild(div);
 }
 
 function displayPokemonData(pokemon){
@@ -194,18 +193,11 @@ function displayPokemonData(pokemon){
     // pokemon name
     show_pokemon_name.textContent = capitalise(pokemon.name);
 
-    const pokemon_name = document.createElement("div");
-    pokemon_name.textContent = capitalise(pokemon.name);
-    pokemon_name.classList.add("pokemon-name");
-    if(pokemon.name == target_pokemon.name){
-        // make the default background red, only change if a match
-        pokemon_name.style.backgroundColor = match_color;
-    }
-    pokemon_info.appendChild(pokemon_name);
+    addDataToDisplay("pokemon-name", pokemon.name, target_pokemon.name, pokemon_info);
 
     // pokemon image
     show_pokemon_image.src = pokemon.image_url;
-
+    
     const pokemon_image_div = document.createElement("div");
     const pokemon_image = document.createElement("img");
     pokemon_image.src = pokemon.image_url;
@@ -218,30 +210,14 @@ function displayPokemonData(pokemon){
 
 
     // pokemon types
-    const pokemon_type_1 = document.createElement("div");
-    pokemon_type_1.textContent = pokemon.type1;
-    pokemon_type_1.classList.add("type-1");
-    if(pokemon.type1 == target_pokemon.type1){
-        pokemon_type_1.style.backgroundColor = match_color;
-    }
-    pokemon_info.appendChild(pokemon_type_1);
+    addDataToDisplay("type-1", pokemon.type1, target_pokemon.type1, pokemon_info);
 
-    const pokemon_type_2 = document.createElement("div");
-    pokemon_type_2.textContent = pokemon.type2;
-    pokemon_type_2.classList.add("type-2");
-    if(pokemon.type2 == target_pokemon.type2){
-        pokemon_type_2.style.backgroundColor = match_color;
-    }
-    pokemon_info.appendChild(pokemon_type_2);
+    addDataToDisplay("type-2", pokemon.type2, target_pokemon.type2, pokemon_info);
 
     // evolution info
-    const evolution_stage = document.createElement("div");
-    evolution_stage.textContent = pokemon.evolution_stage;
-    evolution_stage.classList.add("evolution-stage");
-    if(pokemon.evolution_stage == target_pokemon.evolution_stage){
-        evolution_stage.style.backgroundColor = match_color;
-    }
-    pokemon_info.appendChild(evolution_stage);
+    addDataToDisplay("evolution-stage", pokemon.evolution_stage, target_pokemon.evolution_stage, pokemon_info);
+
+    addDataToDisplay("fully-evolved", pokemon.fully_evolved, target_pokemon.fully_evolved, pokemon_info);
 }
 
 // Main
