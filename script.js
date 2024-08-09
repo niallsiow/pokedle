@@ -20,7 +20,7 @@ function Pokemon(){
 function printPokemon(pokemon){
     console.log(`name = ${pokemon.name}, type 1 = ${pokemon.type1}, type 2 = ${pokemon.type2}`);
     console.log(`image url = ${pokemon.image_url}`);
-    console.log(`evolution stage = , fully evolved = `);
+    console.log(`evolution stage = ${pokemon.evolution_stage}, fully evolved = ${pokemon.fully_evolved}`);
     console.log(`color = , habitat = `);
 }
 
@@ -82,7 +82,6 @@ async function getPokemon(id){
     const pokemon_data = await getPokemonData(id);
     const pokemon_species_data = await getPokemonSpeciesData(id);
     const pokemon_evolution_chain_data = await getPokemonEvolutionDataFromUrl(pokemon_species_data.evolution_chain.url);
-
     
     let evolves_from = pokemon_species_data.evolves_from_species;
     let stage = 1;
@@ -96,13 +95,6 @@ async function getPokemon(id){
         const pre_evo_species_data = await(getPokemonSpeciesDataFromUrl(evolves_from.url));
         evolves_from = pre_evo_species_data.evolves_from_species;
     }
-    
-    console.log(pokemon_species_data);
-    console.log(pokemon_evolution_chain_data);
-
-    console.log("EVOLUTION CHAIN");
-    console.log(pokemon_evolution_chain_data.chain);
-
 
     const evolution_chain = {
         stage1: [],
@@ -118,7 +110,6 @@ async function getPokemon(id){
             evolution_chain.stage3.push(pokemon_evolution_chain_data.chain.evolves_to[i].evolves_to[j].species.name);
         }
     }
-
 
     // create new pokemon
     const pokemon = new Pokemon();
@@ -211,12 +202,10 @@ function displayPokemonData(pokemon){
 
     // pokemon types
     addDataToDisplay("type-1", pokemon.type1, target_pokemon.type1, pokemon_info);
-
     addDataToDisplay("type-2", pokemon.type2, target_pokemon.type2, pokemon_info);
 
     // evolution info
     addDataToDisplay("evolution-stage", pokemon.evolution_stage, target_pokemon.evolution_stage, pokemon_info);
-
     addDataToDisplay("fully-evolved", pokemon.fully_evolved, target_pokemon.fully_evolved, pokemon_info);
 }
 
