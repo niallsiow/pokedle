@@ -38,6 +38,15 @@ function getRandomPokemonID(){
     return Math.floor(Math.random() * 151) + 1;
 }
 
+function checkIfPokemonInList(pokemon){
+    for(let i = 0; i < pokemon_list.length; i++){
+        if(pokemon == pokemon_list[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
 async function populatePokemonList(max){
     // add a map of genname to max pokedex value here
 
@@ -86,10 +95,8 @@ async function getPokemon(id){
     let evolves_from = pokemon_species_data.evolves_from_species;
     let stage = 1;
     while(evolves_from){
-        for(let i = 0; i < pokemon_list.length; i++){
-            if(evolves_from.name == pokemon_list[i]){
-                stage += 1;
-            }
+        if(checkIfPokemonInList(evolves_from.name)){
+            stage += 1;
         }
         
         const pre_evo_species_data = await(getPokemonSpeciesDataFromUrl(evolves_from.url));
@@ -144,21 +151,17 @@ async function getPokemon(id){
     pokemon.fully_evolved = "Yes";
     if(pokemon.evolution_stage == "2"){
         for(let i = 0; i < evolution_chain.stage3.length; i++){
-            for(let j = 0; j < pokemon_list.length; j++){
-                if(evolution_chain.stage3[i] == pokemon_list[j]){
-                    pokemon.fully_evolved = "No";
-                    break;
-                }
+            if(checkIfPokemonInList(evolution_chain.stage3[i])){
+                pokemon.fully_evolved = "No";
+                break;
             }
         }
     }
     else if(pokemon.evolution_stage == "1"){
         for(let i = 0; i < evolution_chain.stage2.length; i++){
-            for(let j = 0; j < pokemon_list.length; j++){
-                if(evolution_chain.stage2[i] == pokemon_list[j]){
-                    pokemon.fully_evolved = "No";
-                    break;
-                }
+            if(checkIfPokemonInList(evolution_chain.stage2[i])){
+                pokemon.fully_evolved = "No";
+                break;
             }
         }
     }
