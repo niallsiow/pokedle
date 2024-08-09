@@ -4,16 +4,24 @@
 
 const match_color = "green";
 
-function Pokemon(name, image_url, type1, type2){
-    this.name = name;
-    this.image_url = image_url;
-    this.type1 = type1;
-    this.type2 = type2;
+function Pokemon(){
+    this.name;
+    this.image_url;
+    this.type1;
+    this.type2;
+
+    this.evolution_stage;
+    this.fully_evolved;
+
+    this.color;
+    this.habitat;
 }
 
 function printPokemon(pokemon){
     console.log(`name = ${pokemon.name}, type 1 = ${pokemon.type1}, type 2 = ${pokemon.type2}`);
     console.log(`image url = ${pokemon.image_url}`);
+    console.log(`evolution stage = , fully evolved = `);
+    console.log(`color = , habitat = `);
 }
 
 function checkGuess(guessed_pokemon){
@@ -55,8 +63,127 @@ async function getPokemonSpeciesData(id){
     return species_data;
 }
 
-async function getPokemonEvolutionData(id){
+async function getPokemonSpeciesDataFromUrl(url){
+    const response = await fetch(url);
+    const species_data = await response.json();
 
+    return species_data;
+}
+
+async function getPokemonEvolutionDataFromUrl(url){
+    const response = await fetch(url);
+    const evolution_chain_data = await response.json();
+
+    return evolution_chain_data;
+}
+
+async function getPokemon(id){
+    // fetch data
+    const pokemon_data = await getPokemonData(id);
+    const pokemon_species_data = await getPokemonSpeciesData(id);
+    const pokemon_evolution_chain_data = await getPokemonEvolutionDataFromUrl(pokemon_species_data.evolution_chain.url);
+
+    
+    let evolves_from = pokemon_species_data.evolves_from_species;
+    let stage = 1;
+    while(evolves_from){
+        for(let i = 0; i < pokemon_list.length; i++){
+            if(evolves_from.name == pokemon_list[i]){
+                stage += 1;
+            }
+        }
+        
+        const pre_evo_species_data = await(getPokemonSpeciesDataFromUrl(evolves_from.url));
+        evolves_from = pre_evo_species_data.evolves_from_species;
+    }
+    
+    console.log(pokemon_species_data);
+    console.log(pokemon_evolution_chain_data);
+
+    console.log("EVOLUTION CHAIN");
+    console.log(pokemon_evolution_chain_data.chain);
+
+
+    const evolution_chain = {
+        stage1: [],
+        stage2: [],
+        stage3: [],
+    };
+
+    evolution_chain.stage1.push(pokemon_evolution_chain_data.chain.species.name);
+
+    for(let i = 0; i < pokemon_evolution_chain_data.chain.evolves_to.length; i++){
+        evolution_chain.stage2.push(pokemon_evolution_chain_data.chain.evolves_to[i].species.name);
+        for(let j = 0; j < pokemon_evolution_chain_data.chain.evolves_to[i].evolves_to.length; j++){
+            evolution_chain.stage3.push(pokemon_evolution_chain_data.chain.evolves_to[i].evolves_to[j].species.name);
+        }
+    }
+
+    console.log(evolution_chain.stage1);
+    console.log(evolution_chain.stage2);
+    console.log(evolution_chain.stage3);
+
+
+    // create new pokemon
+    const pokemon = new Pokemon();
+    pokemon.name = pokemon_data.name;
+    pokemon.image_url = pokemon_data.sprites.front_default;
+    pokemon.type1 = pokemon_data.types[0].type.name;
+    pokemon.type2 = "None";
+    if(pokemon_data.types.length > 1){
+        pokemon.type2 = pokemon_data.types[1].type.name;
+    }
+
+    // find pokemon evolution stage
+    for(let i = 0; i < evolution_chain.stage3.length; i++){
+        if(pokemon.name == evolution_chain.stage3[i]){
+            pokemon.evolution_stage = 3;
+            break;
+        }
+    }
+    for(let i = 0; i < evolution_chain.stage2.length; i++){
+        if(pokemon.name == evolution_chain.stage2[i]){
+            pokemon.evolution_stage = 2;
+            break;
+        }
+    }
+    for(let i = 0; i < evolution_chain.stage1.length; i++){
+        if(pokemon.name == evolution_chain.stage1[i]){
+            pokemon.evolution_stage = 1;
+            break;
+        }
+    }
+
+    pokemon.fully_evolved = true;
+    if(pokemon.evolution_stage == 2){
+        for(let i = 0; i < evolution_chain.stage3.length; i++){
+            for(let j = 0; j < pokemon_list.length; j++){
+                if(evolution_chain.stage3[i] == pokemon_list[j]){
+                    pokemon.fully_evolved = false;
+                }
+            }
+        }
+    }
+    else if(pokemon.evolution_stage == 1){
+        for(let i = 0; i < evolution_chain.stage2.length; i++){
+            for(let j = 0; j < pokemon_list.length; j++){
+                if(evolution_chain.stage2[i] == pokemon_list[j]){
+                    pokemon.fully_evolved = false;
+                }
+            }
+        }
+    }
+
+    console.log(pokemon.evolution_stage);
+
+    if(pokemon.fully_evolved){
+        console.log(`${pokemon.name} is fully evolved.`);
+    }
+    else{
+        console.log(`${pokemon.name} is not fully evolved.`);
+    }
+
+    return pokemon;
 }
 
 function displayPokemonData(pokemon){
@@ -106,44 +233,16 @@ function displayPokemonData(pokemon){
         pokemon_type_2.style.backgroundColor = match_color;
     }
     pokemon_info.appendChild(pokemon_type_2);
-}
 
-async function getPokemon(id){
-    // fetch data
-    const pokemon_data = await getPokemonData(id);
-
-    const pokemon_species_data = await getPokemonSpeciesData(id);
-    
-    console.log("pokemon species");
-    console.log(pokemon_species_data);
-    console.log(pokemon_species_data.evolution_chain.url);
-
-    // // evolution info
-    // const evolution_response = await fetch(pokemon_species_data.evolution_chain.url);
-    // const evolution_chain_data = await evolution_response.json();
-
-    // console.log("evolution chain");
-    // console.log(evolution_chain_data);
-    // console.log(evolution_chain_data.chain);
-
-    // for evolution stage -> if len(evolvesfrom == 0, stage 1, if == 1, stage 2, if == 2, stage 3)
-    // -> if len(evolvesto >= 1, not fully evolved, if == 0, fully evolved)
-
-
-    // create new pokemon
-    const pokemon = new Pokemon();
-    pokemon.name = pokemon_data.name;
-    pokemon.image_url = pokemon_data.sprites.front_default;
-    pokemon.type1 = pokemon_data.types[0].type.name;
-    pokemon.type2 = "None";
-    if(pokemon_data.types.length > 1){
-        pokemon.type2 = pokemon_data.types[1].type.name;
+    // evolution info
+    const evolution_stage = document.createElement("div");
+    evolution_stage.textContent = pokemon.evolution_stage;
+    evolution_stage.classList.add("evolution-stage");
+    if(pokemon.evolution_stage == target_pokemon.evolution_stage){
+        evolution_stage.style.backgroundColor = match_color;
     }
-
-    return pokemon;
+    pokemon_info.appendChild(evolution_stage);
 }
-
-
 
 // Main
 const image_div = document.getElementById("image_div");
@@ -160,15 +259,15 @@ const search_results = document.getElementById("search_results");
 search.addEventListener("input", () => {
     search_results.replaceChildren();
 
-    for(let i = 0; i < pokemon_list.length; i++){
-        if(search.value.length == 0 || pokemon_list[i] == ""){
+    for(let i = 0; i < current_pokemon_list.length; i++){
+        if(search.value.length == 0 || current_pokemon_list[i] == ""){
             continue;
         }
 
         let j = 0;
         let match = true;
-        while(j < search.value.length && j < pokemon_list[i].length){
-            if(search.value[j] != pokemon_list[i][j]){
+        while(j < search.value.length && j < current_pokemon_list[i].length){
+            if(search.value[j] != current_pokemon_list[i][j]){
                 match = false;
                 break;
             }
@@ -179,7 +278,7 @@ search.addEventListener("input", () => {
         if(match){
             // add pokemon to search results
             const matching_pokemon = document.createElement("div");
-            matching_pokemon.textContent += capitalise(pokemon_list[i]);
+            matching_pokemon.textContent += capitalise(current_pokemon_list[i]);
 
             
             // add event listener to allow selection from search results
@@ -189,7 +288,7 @@ search.addEventListener("input", () => {
 
                 checkGuess(pokemon);
 
-                pokemon_list[i] = "";
+                current_pokemon_list[i] = "";
                 search_results.replaceChildren();
                 search.value = "";
             });
@@ -202,15 +301,18 @@ search.addEventListener("input", () => {
 
 
 let pokemon_list = [];
-// populate pokemon array
-populatePokemonList(151);
-
+let current_pokemon_list = [];
 let target_pokemon;
+
 const play_button = document.getElementById("play_button");
 play_button.addEventListener("click", async () => {
+    await populatePokemonList(151);
+    current_pokemon_list = [...pokemon_list];
+
     // get target pokemon
     target_pokemon = await getPokemon(getRandomPokemonID());
     printPokemon(target_pokemon);
+
 });
 
 
