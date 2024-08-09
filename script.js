@@ -161,8 +161,7 @@ search.addEventListener("input", () => {
     search_results.replaceChildren();
 
     for(let i = 0; i < pokemon_list.length; i++){
-
-        if(search.value.length == 0){
+        if(search.value.length == 0 || pokemon_list[i] == ""){
             continue;
         }
 
@@ -189,6 +188,10 @@ search.addEventListener("input", () => {
                 displayPokemonData(pokemon);
 
                 checkGuess(pokemon);
+
+                pokemon_list[i] = "";
+                search_results.replaceChildren();
+                search.value = "";
             });
 
 
