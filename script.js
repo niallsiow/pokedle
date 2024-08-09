@@ -14,6 +14,12 @@ function printPokemon(pokemon){
     console.log(`image url = ${pokemon.image_url}`);
 }
 
+function checkGuess(guessed_pokemon){
+    if(guessed_pokemon.name == target_pokemon.name){
+        console.log("You Win!");
+    }
+}
+
 function capitalise(s){
     return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -22,7 +28,7 @@ function getRandomPokemonID(){
     return Math.floor(Math.random() * 151) + 1;
 }
 
-async function getAllPokemonNames(max){
+async function populatePokemonList(max){
     // add a map of genname to max pokedex value here
 
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${max.toString()}/`);
@@ -132,10 +138,6 @@ show_button.addEventListener("click", () => {
     image_div.style.display = "block";
 });
 
-// populate pokemon array
-const pokemon_list = [];
-getAllPokemonNames(151);
-
 // pokemon search logic
 const search = document.getElementById("search");
 const search_results = document.getElementById("search_results");
@@ -163,14 +165,15 @@ search.addEventListener("input", () => {
         if(match){
             // add pokemon to search results
             const matching_pokemon = document.createElement("div");
-            matching_pokemon.textContent += pokemon_list[i];
+            matching_pokemon.textContent += capitalise(pokemon_list[i]);
 
             
             // add event listener to allow selection from search results
             matching_pokemon.addEventListener("click", async () =>{
                 let pokemon = await getPokemon(i + 1);
-                printPokemon(pokemon);
                 displayPokemonData(pokemon);
+
+                checkGuess(pokemon);
             });
 
 
@@ -180,7 +183,17 @@ search.addEventListener("input", () => {
 });
 
 
+let pokemon_list = [];
+// populate pokemon array
+populatePokemonList(151);
 
+let target_pokemon;
+const play_button = document.getElementById("play_button");
+play_button.addEventListener("click", async () => {
+    // get target pokemon
+    target_pokemon = await getPokemon(getRandomPokemonID());
+    printPokemon(target_pokemon);
 
-// getPokemon(getRandomPokemonID());
+});
+
 
