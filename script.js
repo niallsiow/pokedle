@@ -2,6 +2,8 @@
 // can then populate it with get pokemon, and pass it to display pokemon
 // or populate with get pokemon, and make it the guess to match against
 
+const match_color = "green";
+
 function Pokemon(name, image_url, type1, type2){
     this.name = name;
     this.image_url = image_url;
@@ -68,6 +70,10 @@ function displayPokemonData(pokemon){
     const pokemon_name = document.createElement("div");
     pokemon_name.textContent = capitalise(pokemon.name);
     pokemon_name.classList.add("pokemon-name");
+    if(pokemon.name == target_pokemon.name){
+        // make the default background red, only change if a match
+        pokemon_name.style.backgroundColor = match_color;
+    }
     pokemon_info.appendChild(pokemon_name);
 
     // pokemon image
@@ -78,6 +84,9 @@ function displayPokemonData(pokemon){
     pokemon_image.src = pokemon.image_url;
     pokemon_image_div.appendChild(pokemon_image);
     pokemon_image_div.classList.add("pokemon-image");
+    if(pokemon.name == target_pokemon.name){
+        pokemon_image_div.style.backgroundColor = match_color;
+    }
     pokemon_info.appendChild(pokemon_image_div);
 
 
@@ -85,11 +94,17 @@ function displayPokemonData(pokemon){
     const pokemon_type_1 = document.createElement("div");
     pokemon_type_1.textContent = pokemon.type1;
     pokemon_type_1.classList.add("type-1");
+    if(pokemon.type1 == target_pokemon.type1){
+        pokemon_type_1.style.backgroundColor = match_color;
+    }
     pokemon_info.appendChild(pokemon_type_1);
 
     const pokemon_type_2 = document.createElement("div");
     pokemon_type_2.textContent = pokemon.type2;
     pokemon_type_2.classList.add("type-2");
+    if(pokemon.type2 == target_pokemon.type2){
+        pokemon_type_2.style.backgroundColor = match_color;
+    }
     pokemon_info.appendChild(pokemon_type_2);
 }
 
@@ -193,7 +208,6 @@ play_button.addEventListener("click", async () => {
     // get target pokemon
     target_pokemon = await getPokemon(getRandomPokemonID());
     printPokemon(target_pokemon);
-
 });
 
 
