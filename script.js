@@ -91,17 +91,6 @@ async function getPokemon(id){
     const pokemon_data = await getPokemonData(id);
     const pokemon_species_data = await getPokemonSpeciesData(id);
     const pokemon_evolution_chain_data = await getPokemonEvolutionDataFromUrl(pokemon_species_data.evolution_chain.url);
-    
-    let evolves_from = pokemon_species_data.evolves_from_species;
-    let stage = 1;
-    while(evolves_from){
-        if(checkIfPokemonInList(evolves_from.name)){
-            stage += 1;
-        }
-        
-        const pre_evo_species_data = await(getPokemonSpeciesDataFromUrl(evolves_from.url));
-        evolves_from = pre_evo_species_data.evolves_from_species;
-    }
 
     const evolution_chain = {
         stage1: [],
