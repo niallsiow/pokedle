@@ -38,6 +38,14 @@
     grid-column: 6;
 }
 
+.color{
+    grid-column: 7;
+}
+
+.habitat{
+    grid-column: 8;
+}
+
 #search_results{
     max-height: 100px;
     width: 300px;

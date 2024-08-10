@@ -92,6 +92,8 @@ async function getPokemon(id){
     const pokemon_species_data = await getPokemonSpeciesData(id);
     const pokemon_evolution_chain_data = await getPokemonEvolutionDataFromUrl(pokemon_species_data.evolution_chain.url);
 
+    console.log(pokemon_species_data);
+
     const evolution_chain = {
         stage1: [],
         stage2: [],
@@ -155,6 +157,10 @@ async function getPokemon(id){
         }
     }
 
+    // pokemon color and habitat
+    pokemon.color = pokemon_species_data.color.name;
+    pokemon.habitat = pokemon_species_data.habitat.name;
+
     return pokemon;
 }
 
@@ -199,6 +205,10 @@ function displayPokemonData(pokemon){
     // evolution info
     addDataToDisplay("evolution-stage", pokemon.evolution_stage, target_pokemon.evolution_stage, pokemon_info);
     addDataToDisplay("fully-evolved", pokemon.fully_evolved, target_pokemon.fully_evolved, pokemon_info);
+
+    // color and habitat
+    addDataToDisplay("color", pokemon.color, target_pokemon.color, pokemon_info);
+    addDataToDisplay("habitat", pokemon.habitat, target_pokemon.habitat, pokemon_info);
 }
 
 // Main
