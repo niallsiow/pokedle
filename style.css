@@ -1,4 +1,13 @@
+:root{
+    --bg-color: rgb(40, 40, 40);
+}
 
+*{
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    background-color: var(--bg-color);
+    color: white;
+}
 
 #pokemon_info{
     display: grid;
@@ -7,11 +16,13 @@
 
     grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px;
 
-    background-color: red;
+    border: 1px solid white;
+
+    background-color: rgb(255, 0, 0);
 }
 
 .header{
-    background-color: white;
+    background-color: var(--bg-color);
 }
 
 .pokemon-name{
@@ -44,6 +55,10 @@
 
 .habitat{
     grid-column: 8;
+}
+
+#search{
+    background-color: white;
 }
 
 #search_results{

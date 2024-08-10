@@ -179,14 +179,24 @@ function displayPokemonData(pokemon){
     const show_pokemon_image = document.getElementById("pokemon_image");
     const pokemon_info = document.getElementById("pokemon_info");
 
+    
+    
     // pokemon name
-    show_pokemon_name.textContent = capitalise(pokemon.name);
-
     addDataToDisplay("pokemon-name", pokemon.name, target_pokemon.name, pokemon_info);
 
-    // pokemon image
-    show_pokemon_image.src = pokemon.image_url;
+    // pokemon types
+    addDataToDisplay("type-1", pokemon.type1, target_pokemon.type1, pokemon_info);
+    addDataToDisplay("type-2", pokemon.type2, target_pokemon.type2, pokemon_info);
+
+    // evolution info
+    addDataToDisplay("evolution-stage", pokemon.evolution_stage, target_pokemon.evolution_stage, pokemon_info);
+    addDataToDisplay("fully-evolved", pokemon.fully_evolved, target_pokemon.fully_evolved, pokemon_info);
     
+    // color and habitat
+    addDataToDisplay("color", pokemon.color, target_pokemon.color, pokemon_info);
+    addDataToDisplay("habitat", pokemon.habitat, target_pokemon.habitat, pokemon_info);
+    
+    // pokemon image
     const pokemon_image_div = document.createElement("div");
     const pokemon_image = document.createElement("img");
     pokemon_image.src = pokemon.image_url;
@@ -196,28 +206,9 @@ function displayPokemonData(pokemon){
         pokemon_image_div.style.backgroundColor = match_color;
     }
     pokemon_info.appendChild(pokemon_image_div);
-
-
-    // pokemon types
-    addDataToDisplay("type-1", pokemon.type1, target_pokemon.type1, pokemon_info);
-    addDataToDisplay("type-2", pokemon.type2, target_pokemon.type2, pokemon_info);
-
-    // evolution info
-    addDataToDisplay("evolution-stage", pokemon.evolution_stage, target_pokemon.evolution_stage, pokemon_info);
-    addDataToDisplay("fully-evolved", pokemon.fully_evolved, target_pokemon.fully_evolved, pokemon_info);
-
-    // color and habitat
-    addDataToDisplay("color", pokemon.color, target_pokemon.color, pokemon_info);
-    addDataToDisplay("habitat", pokemon.habitat, target_pokemon.habitat, pokemon_info);
 }
 
 // Main
-const image_div = document.getElementById("image_div");
-const show_button = document.getElementById("show_button");
-
-show_button.addEventListener("click", () => {
-    image_div.style.display = "block";
-});
 
 // pokemon search logic
 const search = document.getElementById("search");
