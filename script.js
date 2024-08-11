@@ -1,7 +1,3 @@
-// make a pokemon object?
-// can then populate it with get pokemon, and pass it to display pokemon
-// or populate with get pokemon, and make it the guess to match against
-
 const match_color = "green";
 
 function Pokemon(){
@@ -64,8 +60,6 @@ function checkIfPokemonInList(pokemon){
 }
 
 async function populatePokemonList(max){
-    // add a map of genname to max pokedex value here
-
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${max.toString()}/`);
     const pokemon_data = await response.json();
 
