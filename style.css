@@ -20,6 +20,11 @@ html, body{
     opacity: 0.75;
 }
 
+#finish_dialog::backdrop{
+    background-color: black;
+    opacity: 0.75;
+}
+
 #contents{
     height: 100vh;
     display: flex;
