@@ -102,7 +102,17 @@ html, body{
     background-color: var(--bad-guess-color);
 }
 
+#search_contents{
+    position: relative;
+    padding-bottom: 50px;
+}
+
 #search{
+    width: 300px;
+
+    padding: 5px 0px 5px 5px;
+    font-size: 18px;
+
     background-color: white;
     color: black;
 }
@@ -111,6 +121,8 @@ html, body{
     max-height: 100px;
     width: 300px;
     overflow: auto;
+
+    position: absolute;
 }
 
 #search_results > * {
