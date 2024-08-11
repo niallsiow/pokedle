@@ -24,9 +24,25 @@ function printPokemon(pokemon){
     console.log(`color = , habitat = `);
 }
 
+let guesses = 0;
 function checkGuess(guessed_pokemon){
+    guesses += 1;
+
     if(guessed_pokemon.name == target_pokemon.name){
-        console.log("You Win!");
+        const finish_dialog = document.getElementById("finish_dialog");
+        const win_text = document.createElement("div");
+        win_text.textContent += "You Win!";
+        finish_dialog.appendChild(win_text);
+
+        finish_dialog.showModal();
+    }
+    else if(guesses == 6){
+        const finish_dialog = document.getElementById("finish_dialog");
+        const lose_text = document.createElement("div");
+        lose_text.textContent += "You Lose...";
+        finish_dialog.appendChild(lose_text);
+
+        finish_dialog.showModal();
     }
 }
 
