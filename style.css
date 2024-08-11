@@ -1,5 +1,6 @@
 :root{
     --bg-color: rgb(40, 40, 40);
+    --bad-guess-color: red;
 }
 
 #play_dialog::backdrop{
@@ -12,6 +13,10 @@
 
     background-color: var(--bg-color);
     color: white;
+}
+
+#contents{
+    
 }
 
 #pokemon_info{
@@ -30,34 +35,54 @@
 
 .pokemon-name{
     grid-column: 1;
+
+    background-color: var(--bad-guess-color);
 }
 
 .pokemon-image{
     grid-column: 2;
+
+    background-color: var(--bad-guess-color);
+}
+
+.pokemon-image > *{
+    background-color: var(--bad-guess-color);
 }
 
 .type-1{
     grid-column: 3;
+
+    background-color: var(--bad-guess-color);
 }
 
 .type-2{
     grid-column: 4;
+
+    background-color: var(--bad-guess-color);
 }
 
 .evolution-stage{
     grid-column: 5;
+
+    background-color: var(--bad-guess-color);
 }
 
 .fully-evolved{
     grid-column: 6;
+
+    background-color: var(--bad-guess-color);
 }
 
 .color{
     grid-column: 7;
+
+    background-color: var(--bad-guess-color);
 }
 
 .habitat{
     grid-column: 8;
+
+    background-color: var(--bad-guess-color);
 }
 
 #search{

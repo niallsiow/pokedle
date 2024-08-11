@@ -187,10 +187,11 @@ function displayPokemonData(pokemon){
     pokemon_image_div.appendChild(pokemon_image);
     pokemon_image_div.classList.add("pokemon-image");
     if(pokemon.name == target_pokemon.name){
+        pokemon_image.style.backgroundColor = match_color;
         pokemon_image_div.style.backgroundColor = match_color;
     }
     pokemon_info.appendChild(pokemon_image_div);
-    
+
     // pokemon types
     addDataToDisplay("type-1", pokemon.type1, target_pokemon.type1, pokemon_info);
     addDataToDisplay("type-2", pokemon.type2, target_pokemon.type2, pokemon_info);
