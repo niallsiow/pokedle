@@ -258,14 +258,15 @@ search.addEventListener("input", () => {
             
             // add event listener to allow selection from search results
             matching_pokemon.addEventListener("click", async () =>{
+                current_pokemon_list[i] = "";
+                search_results.replaceChildren();
+                search.value = "";
+                
                 let pokemon = await getPokemon(i + 1);
                 displayPokemonData(pokemon);
 
                 checkGuess(pokemon);
 
-                current_pokemon_list[i] = "";
-                search_results.replaceChildren();
-                search.value = "";
             });
 
 
