@@ -3,20 +3,32 @@
     --bad-guess-color: red;
 }
 
+*{
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    
+    background-color: var(--bg-color);
+    color: white;
+}
+
+html, body{
+    padding: 0;
+    margin: 0;
+}
+
 #play_dialog::backdrop{
     background-color: black;
     opacity: 0.75;
 }
 
-*{
-    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
-    background-color: var(--bg-color);
-    color: white;
-}
-
 #contents{
-    
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
 }
 
 #pokemon_info{
