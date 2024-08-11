@@ -99,14 +99,13 @@ html, body{
 
 #search{
     background-color: white;
+    color: black;
 }
 
 #search_results{
     max-height: 100px;
     width: 300px;
     overflow: auto;
-
-    color: black;
 }
 
 #search_results > * {
