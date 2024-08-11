@@ -248,6 +248,7 @@ search.addEventListener("input", () => {
             // add pokemon to search results
             const matching_pokemon = document.createElement("div");
             matching_pokemon.textContent += capitalise(current_pokemon_list[i]);
+            matching_pokemon.classList.add("search-result");
 
             
             // add event listener to allow selection from search results
@@ -260,7 +261,6 @@ search.addEventListener("input", () => {
                 displayPokemonData(pokemon);
 
                 checkGuess(pokemon);
-
             });
 
 
