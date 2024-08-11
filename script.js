@@ -1,4 +1,4 @@
-const match_color = "green";
+const match_color = "rgb(50, 200, 50)";
 
 function Pokemon(){
     this.name;
