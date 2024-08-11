@@ -2,6 +2,11 @@
     --bg-color: rgb(40, 40, 40);
 }
 
+#play_dialog::backdrop{
+    background-color: black;
+    opacity: 0.75;
+}
+
 *{
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 

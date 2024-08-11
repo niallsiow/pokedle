@@ -209,6 +209,9 @@ function displayPokemonData(pokemon){
 }
 
 // Main
+const play_dialog = document.getElementById("play_dialog");
+play_dialog.showModal();
+
 
 // pokemon search logic
 const search = document.getElementById("search");
@@ -264,6 +267,8 @@ let target_pokemon;
 
 const play_button = document.getElementById("play_button");
 play_button.addEventListener("click", async () => {
+    play_button.style.display = "none";
+
     await populatePokemonList(151);
     current_pokemon_list = [...pokemon_list];
 
@@ -271,6 +276,7 @@ play_button.addEventListener("click", async () => {
     target_pokemon = await getPokemon(getRandomPokemonID());
     printPokemon(target_pokemon);
 
+    play_dialog.close();
 });
 
 
