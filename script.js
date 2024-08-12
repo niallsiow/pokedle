@@ -102,8 +102,6 @@ async function getPokemon(id){
     const pokemon_species_data = await getPokemonSpeciesData(id);
     const pokemon_evolution_chain_data = await getPokemonEvolutionDataFromUrl(pokemon_species_data.evolution_chain.url);
 
-    console.log(pokemon_species_data);
-
     const evolution_chain = {
         stage1: [],
         stage2: [],
