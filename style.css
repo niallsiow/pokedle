@@ -20,9 +20,30 @@ h1{
     margin: 0;
 }
 
+h2{
+    padding: 0;
+    margin: 0;
+}
+
+
 #play_dialog::backdrop{
     background-color: black;
     opacity: 0.75;
+}
+
+#play_dialog_contents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#play_button{
+    font-size: 20px;
+}
+
+#play_button:hover{
+    background-color: rgb(150, 150, 150);
 }
 
 #finish_dialog::backdrop{
