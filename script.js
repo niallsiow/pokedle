@@ -108,13 +108,30 @@ async function getPokemon(id){
         stage3: [],
     };
 
-    evolution_chain.stage1.push(pokemon_evolution_chain_data.chain.species.name);
+    const stage1 = pokemon_evolution_chain_data.chain;
 
-    for(let i = 0; i < pokemon_evolution_chain_data.chain.evolves_to.length; i++){
-        evolution_chain.stage2.push(pokemon_evolution_chain_data.chain.evolves_to[i].species.name);
-        for(let j = 0; j < pokemon_evolution_chain_data.chain.evolves_to[i].evolves_to.length; j++){
-            evolution_chain.stage3.push(pokemon_evolution_chain_data.chain.evolves_to[i].evolves_to[j].species.name);
+    // read in all existing pokemon in evolution chain if they are in the pokemon list
+    if(checkIfPokemonInList(stage1.species.name)){
+        evolution_chain.stage1.push(stage1.species.name);
+    }
+
+    for(let i = 0; i < stage1.evolves_to.length; i++){
+        const stage2 = stage1.evolves_to[i];
+        if(checkIfPokemonInList(stage2.species.name)){
+            evolution_chain.stage2.push(stage2.species.name);
         }
+        for(let j = 0; j < stage2.evolves_to.length; j++){
+            const stage3 = stage2.evolves_to[j];
+            if(checkIfPokemonInList(stage3.species.name)){
+                evolution_chain.stage3.push(stage3.species.name);
+            }
+        }
+    }
+
+    while(!evolution_chain.stage1.length){
+        evolution_chain.stage1 = evolution_chain.stage2;
+        evolution_chain.stage2 = evolution_chain.stage3;
+        evolution_chain.stage3 = [];
     }
 
     // create new pokemon
