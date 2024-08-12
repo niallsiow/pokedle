@@ -17,7 +17,7 @@ function printPokemon(pokemon){
     console.log(`name = ${pokemon.name}, type 1 = ${pokemon.type1}, type 2 = ${pokemon.type2}`);
     console.log(`image url = ${pokemon.image_url}`);
     console.log(`evolution stage = ${pokemon.evolution_stage}, fully evolved = ${pokemon.fully_evolved}`);
-    console.log(`color = , habitat = `);
+    console.log(`color = ${pokemon.color}, habitat = ${pokemon.habitat}`);
 }
 
 let guesses = 0;
