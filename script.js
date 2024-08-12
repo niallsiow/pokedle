@@ -20,25 +20,38 @@ function printPokemon(pokemon){
     console.log(`color = ${pokemon.color}, habitat = ${pokemon.habitat}`);
 }
 
+function displayFinishDialog(end_text){
+    const finish_dialog = document.getElementById("finish_dialog");
+    const finish_contents = document.getElementById("finish_dialog_contents");
+    
+    const end_text_div = document.createElement("div");
+    end_text_div.textContent += end_text;
+    finish_contents.appendChild(end_text_div);
+
+    const reveal_text_div = document.createElement("div");
+    reveal_text_div.textContent += "The answer was:";
+    finish_contents.appendChild(reveal_text_div);
+
+    const pokemon_image = document.createElement("img");
+    pokemon_image.src = target_pokemon.image_url;
+    finish_contents.appendChild(pokemon_image);
+
+    const pokemon_name = document.createElement("div");
+    pokemon_name.textContent += `${capitalise(target_pokemon.name)}!`;
+    finish_contents.appendChild(pokemon_name);
+
+    finish_dialog.showModal();
+}
+
 let guesses = 0;
 function checkGuess(guessed_pokemon){
     guesses += 1;
 
     if(guessed_pokemon.name == target_pokemon.name){
-        const finish_dialog = document.getElementById("finish_dialog");
-        const win_text = document.createElement("div");
-        win_text.textContent += "You Win!";
-        finish_dialog.appendChild(win_text);
-
-        finish_dialog.showModal();
+        displayFinishDialog("You Win!");
     }
     else if(guesses == 6){
-        const finish_dialog = document.getElementById("finish_dialog");
-        const lose_text = document.createElement("div");
-        lose_text.textContent += "You Lose...";
-        finish_dialog.appendChild(lose_text);
-
-        finish_dialog.showModal();
+        displayFinishDialog("You Lose...");
     }
 }
 

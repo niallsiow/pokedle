@@ -51,6 +51,13 @@ h2{
     opacity: 0.75;
 }
 
+#finish_dialog_contents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
 #contents{
     height: 100vh;
     display: flex;
