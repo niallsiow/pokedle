@@ -22,23 +22,29 @@ function printPokemon(pokemon){
 
 function displayFinishDialog(end_text){
     const finish_dialog = document.getElementById("finish_dialog");
-    const finish_contents = document.getElementById("finish_dialog_contents");
+    const game_over_contents = document.getElementById("game_over_contents");
+    game_over_contents.replaceChildren();
     
     const end_text_div = document.createElement("div");
+    end_text_div.style.fontSize = "20px";
+    end_text_div.style.fontWeight = "bold";
     end_text_div.textContent += end_text;
-    finish_contents.appendChild(end_text_div);
+    game_over_contents.appendChild(end_text_div);
 
     const reveal_text_div = document.createElement("div");
     reveal_text_div.textContent += "The answer was:";
-    finish_contents.appendChild(reveal_text_div);
+    game_over_contents.appendChild(reveal_text_div);
 
     const pokemon_image = document.createElement("img");
     pokemon_image.src = target_pokemon.image_url;
-    finish_contents.appendChild(pokemon_image);
+    game_over_contents.appendChild(pokemon_image);
 
     const pokemon_name = document.createElement("div");
+    pokemon_name.style.fontSize = "18px";
     pokemon_name.textContent += `${capitalise(target_pokemon.name)}!`;
-    finish_contents.appendChild(pokemon_name);
+    game_over_contents.appendChild(pokemon_name);
+
+    play_again_button.style.display = "block";
 
     finish_dialog.showModal();
 }
@@ -304,6 +310,9 @@ let target_pokemon;
 
 const play_button = document.getElementById("play_button");
 play_button.addEventListener("click", async () => {
+    const play_dialog_contents = document.getElementById("play_dialog_contents");
+    play_dialog_contents.replaceChildren();
+    play_dialog_contents.textContent += "Fetching Random Target Pokemon...";
     play_button.style.display = "none";
 
     await populatePokemonList(151);
@@ -314,6 +323,30 @@ play_button.addEventListener("click", async () => {
     printPokemon(target_pokemon);
 
     play_dialog.close();
+});
+
+const play_again_button = document.getElementById("play_again_button");
+play_again_button.addEventListener("click", async () => {
+    const game_over_contents = document.getElementById("game_over_contents");
+    game_over_contents.replaceChildren();
+    game_over_contents.textContent = "Fetching New Target Pokemon...";
+    play_again_button.style.display = "none";
+
+    // clear all previous guesses
+    const pokemon_info = document.getElementById("pokemon_info");
+    const headers = document.querySelectorAll(".header");
+    pokemon_info.replaceChildren(...headers);
+
+    current_pokemon_list = [...pokemon_list];
+
+    guesses = 0;
+
+    // get new target pokemon
+    target_pokemon = await getPokemon(getRandomPokemonID());
+    printPokemon(target_pokemon);
+
+    const finish_dialog = document.getElementById("finish_dialog");
+    finish_dialog.close();
 });
 
 

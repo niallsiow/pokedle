@@ -51,11 +51,26 @@ h2{
     opacity: 0.75;
 }
 
+#game_over_contents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;    
+}
+
 #finish_dialog_contents{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
+}
+
+#play_again_button{
+    font-size: 20px;
+}
+
+#play_again_button:hover{
+    background-color: rgb(150, 150, 150);
 }
 
 #contents{
