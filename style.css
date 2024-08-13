@@ -1,6 +1,8 @@
 :root{
     --bg-color: rgb(40, 40, 40);
     --bad-guess-color: rgb(200, 50, 50);
+    --button-font-size: 32px;
+    --table-font-size: min(calc(4px + 1vw), 20px);
 }
 
 *{
@@ -10,21 +12,10 @@
     color: white;
 }
 
-html, body{
+html, body, h1, h2{
     padding: 0;
     margin: 0;
 }
-
-h1{
-    padding: 0;
-    margin: 0;
-}
-
-h2{
-    padding: 0;
-    margin: 0;
-}
-
 
 #play_dialog::backdrop{
     background-color: black;
@@ -36,10 +27,12 @@ h2{
     flex-direction: column;
     align-items: center;
     gap: 10px;
+
+    text-align: center;
 }
 
 #play_button{
-    font-size: 20px;
+    font-size: var(--button-font-size);
 }
 
 #play_button:hover{
@@ -56,6 +49,8 @@ h2{
     flex-direction: column;
     align-items: center;
     gap: 10px;    
+
+    text-align: center;
 }
 
 #finish_dialog_contents{
@@ -63,10 +58,12 @@ h2{
     flex-direction: column;
     align-items: center;
     gap: 30px;
+
+    text-align: center;
 }
 
 #play_again_button{
-    font-size: 20px;
+    font-size: var(--button-font-size);
 }
 
 #play_again_button:hover{
@@ -87,9 +84,8 @@ h2{
 #pokemon_info{
     display: grid;
 
-    max-width: max-content;
-
-    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px;
+    grid-template-columns: repeat(8, min(150px, 12vw));
+    grid-auto-rows: min(100px, 10vw);
 
     border: 1px solid white;
 }
@@ -100,64 +96,58 @@ h2{
     align-items: center;
     justify-content: center;
 
-    font-size: 18px;
+    font-size: var(--table-font-size);
 }
 
 .header{
     background-color: var(--bg-color);
 
-    font-size: 20px;
+    text-align: center;
 }
 
 .pokemon-name{
     grid-column: 1;
-
     background-color: var(--bad-guess-color);
 }
 
 .pokemon-image{
     grid-column: 2;
-
     background-color: var(--bad-guess-color);
 }
 
 .pokemon-image > *{
+    height: 100%;
+    width: auto;
     background-color: var(--bad-guess-color);
 }
 
 .type-1{
     grid-column: 3;
-
     background-color: var(--bad-guess-color);
 }
 
 .type-2{
     grid-column: 4;
-
     background-color: var(--bad-guess-color);
 }
 
 .evolution-stage{
     grid-column: 5;
-
     background-color: var(--bad-guess-color);
 }
 
 .fully-evolved{
     grid-column: 6;
-
     background-color: var(--bad-guess-color);
 }
 
 .color{
     grid-column: 7;
-
     background-color: var(--bad-guess-color);
 }
 
 .habitat{
     grid-column: 8;
-
     background-color: var(--bad-guess-color);
 }
 
