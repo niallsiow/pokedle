@@ -274,7 +274,7 @@ search.addEventListener("input", () => {
         let j = 0;
         let match = true;
         while(j < search.value.length && j < current_pokemon_list[i].length){
-            if(search.value[j] != current_pokemon_list[i][j]){
+            if(search.value[j].toLowerCase() != current_pokemon_list[i][j]){
                 match = false;
                 break;
             }
