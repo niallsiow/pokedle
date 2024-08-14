@@ -260,6 +260,10 @@ const search = document.getElementById("search");
 const search_results = document.getElementById("search_results");
 
 search.addEventListener("input", () => {
+
+    const test_log = document.getElementById("test_log");
+    test_log.textContent = search.value;
+
     search_results.replaceChildren();
 
     for(let i = 0; i < current_pokemon_list.length; i++){
